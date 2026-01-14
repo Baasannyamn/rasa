@@ -1,0 +1,164 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - сайн уу
+    - сайн байна уу
+    - hello
+    - hi
+    - hey
+
+- intent: menu
+  examples: |
+    - menu
+    - цэс
+    - меню
+
+- intent: help
+  examples: |
+    - тусламж
+    - help
+    - яаж ажиллах вэ
+    - how to use
+
+- intent: start_trip
+  examples: |
+    - аялал
+    - аяллын зөвлөгөө
+    - санал болго
+    - trip
+    - travel
+    - start travel
+
+- intent: reset_chat
+  examples: |
+    - reset
+    - дахин эхлэе
+    - шинээр эхэл
+    - new chat
+    - restart chat
+
+- intent: goodbye
+  examples: |
+    - баяртай
+    - bye
+    - see you
+
+- intent: set_lang_mn
+  examples: |
+    - LANG_MN
+    - mn
+    - mongolian
+    - монгол
+    - монголоор
+
+- intent: set_lang_en
+  examples: |
+    - LANG_EN
+    - en
+    - english
+    - англи
+    - англиар
+
+- intent: provide_budget
+  examples: |
+    - 2000000
+    - 2 сая
+    - 3.5 сая
+    - 500$
+    - 800 usd
+    - low
+    - medium
+    - high
+    - бага
+    - дунд
+    - өндөр
+    - төсөв 2 сая
+
+- intent: provide_country
+  examples: |
+    - [Япон](country)
+    - [Japan](country)
+    - [Солонгос](country)
+    - [Korea](country)
+    - [АНУ](country)
+    - [USA](country)
+    - [Казахстан](country)
+    - [Thailand](country)
+    - [Тайланд](country)
+
+- intent: provide_interest
+  examples: |
+    - [байгаль](interest)
+    - [соёл](interest)
+    - [адал явдал](interest)
+    - [тайван](interest)
+    - nature
+    - culture
+    - adventure
+    - quiet
+
+- intent: provide_duration
+  examples: |
+    - [5](number)
+    - [7](number)
+    - [10](number)
+    - 7 өдөр
+    - 5 days
+
+- intent: provide_month
+  examples: |
+    - [1 сар](month)
+    - [6 сар](month)
+    - [7 сар](month)
+    - [8 сар](month)
+    - [12 сар](month)
+    - month [7](month)
+    - 7
+    - 8
+
+- intent: provide_destination
+  examples: |
+    - [Хөвсгөл](destination)
+    - [Өмнөговь](destination)
+    - [Архангай](destination)
+    - [Баян-Өлгий](destination)
+    - [Улаанбаатар](destination)
+    - [Дархан](destination)
+    - [Эрдэнэт](destination)
+    - мэдэхгүй
+    - not sure
+    - anywhere
+
+- intent: provide_group_size
+  examples: |
+    - [1](number) хүн
+    - [2](number)
+    - [4](number) хүнтэй
+    - we are [3](number)
+
+- intent: provide_style
+  examples: |
+    - backpack
+    - comfort
+    - luxury
+    - хэмнэлттэй
+    - тухтай
+    - тансаг
+
+- intent: provide_yes
+  examples: |
+    - тийм
+    - хэрэгтэй
+    - болно
+    - yes
+    - ok
+
+- intent: provide_no
+  examples: |
+    - үгүй
+    - хэрэггүй
+    - шаардлагагүй
+    - no
+    - not needed

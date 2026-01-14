@@ -1,0 +1,62 @@
+version: "3.1"
+
+rules:
+- rule: greet -> menu
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - action: utter_menu
+
+- rule: show menu
+  steps:
+    - intent: menu
+    - action: utter_menu
+
+- rule: help
+  steps:
+    - intent: help
+    - action: utter_help
+
+# ✅ Хэрэглэгч "аялал" гэж бичвэл form эхэлнэ
+- rule: start trip -> form
+  steps:
+    - intent: start_trip
+    - action: travel_form
+    - active_loop: travel_form
+
+# ✅ Хэрэглэгч шууд төсөв/улс/сонирхол/өдөр/сар бичсэн ч form автоматаар эхэлнэ
+- rule: any trip info -> form
+  steps:
+    - or:
+        - intent: provide_budget
+        - intent: provide_country
+        - intent: provide_interest
+        - intent: provide_duration
+        - intent: provide_month
+    - action: travel_form
+    - active_loop: travel_form
+
+# ✅ Form бөглөгдөж дуусвал recommendation гаргана
+- rule: submit form
+  condition:
+    - active_loop: travel_form
+  steps:
+    - action: travel_form
+    - active_loop: null
+    - action: action_recommend_trip
+    - action: utter_menu
+
+- rule: reset chat
+  steps:
+    - intent: reset_chat
+    - action: action_reset_chat
+    - action: utter_menu
+
+- rule: goodbye
+  steps:
+    - intent: goodbye
+    - action: utter_goodbye
+- rule: fallback -> menu
+  steps:
+    - intent: nlu_fallback
+    - action: utter_menu
