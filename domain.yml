@@ -2,34 +2,197 @@ version: "3.1"
 
 intents:
   - greet
-  - provide_region
+  - menu
+  - help
+  - start_trip
+  - reset_chat
+  - goodbye
+
+  - provide_budget
+  - provide_country
+  - provide_interest
+  - provide_duration
+  - provide_month
+  - provide_destination
+  - provide_group_size
+  - provide_style
+  - provide_yes
+  - provide_no
+
+  - set_lang_mn
+  - set_lang_en
+  - nlu_fallback
 
 entities:
-  - region
+  - country
+  - interest
+  - month
+  - number
+  - destination
 
 slots:
-  region:
+  language:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_intent
+        intent: set_lang_mn
+        value: "mn"
+      - type: from_intent
+        intent: set_lang_en
+        value: "en"
+
+  budget_amount:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+
+  budget_level:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: custom
+
+  country:
     type: text
     influence_conversation: true
     mappings:
       - type: from_entity
-        entity: region
+        entity: country
+      - type: from_text
+
+  interest:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: interest
+      - type: from_text
+
+  duration_days:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: number
+      - type: from_text
+
+  travel_month:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: month
+      - type: from_text
+
+  destination:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: destination
+      - type: from_text
+
+  group_size:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: number
+      - type: from_text
+
+  travel_style:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+
+  need_guide:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: custom
+
+  need_hotel:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: custom
+
+forms:
+  travel_form:
+    required_slots:
+      - budget_amount
+      - country
+      - interest
+      - duration_days
+      - travel_month
+      - destination
+      - group_size
+      - travel_style
+      - need_guide
+      - need_hotel
+
+actions:
+  - validate_travel_form
+  - action_recommend_trip
+  - action_reset_chat
 
 responses:
   utter_greet:
-    - text: "Сайн байна уу 👋 Та аль нутгийн хүн бэ?"
+    - text: "Сайн байна уу 👋 / Hello 👋  (MN/EN хэлээ дээрх товчоор солино.)"
 
-  utter_suggest_west:
-    - text: "Танд Алтай, Баян-Өлгий, Ховд аймгуудын уул, байгаль их сонирхолтой байх болно ⛰️"
+  utter_menu:
+    - text: "Эхлэх: **аялал** | Тусламж: **тусламж** | Дахин эхлэх: **reset** | Language: **MN/EN**"
 
-  utter_suggest_east:
-    - text: "Танд Дорнод, Сүхбаатар аймгийн уудам тал, байгалийн аялал тохирно 🌾"
+  utter_help:
+    - text: |
+        Би дараах мэдээллээр зөвлөгөө өгнө / I can help with:
+        1) Төсөв / Budget (2 сая, 500$, бага/дунд/өндөр)
+        2) Аль улсаас / Country
+        3) Сонирхол / Interest (байгаль/соёл/адал/тайван)
+        4) Хугацаа / Days
+        5) Ирэх сар / Month
+        + Очих газар / Destination (аймаг/газар), Хүмүүс, Style, Guide/Hotel
 
-  utter_suggest_central:
-    - text: "Танд Төв, Архангай, Өвөрхангайн байгаль, түүхийн аялал тохирно 🏞️"
+  utter_lang_mn:
+    - text: "Хэл Монгол 🇲🇳 болж солигдлоо. (аялал гэж бичээд эхэлнэ)"
+  utter_lang_en:
+    - text: "Language set to English 🇬🇧. (type: travel to start)"
 
-  utter_suggest_city:
-    - text: "Хотын орчинд дассан тул Улаанбаатар орчмын Тэрэлж, Манзушир сайхан сонголт байна 🏙️"
+  utter_ask_budget_amount:
+    - text: "Таны төсөв хэд вэ? / What's your budget? (2 сая, 500$, бага/дунд/өндөр)"
+
+  utter_ask_country:
+    - text: "Та аль улсаас ирж байна? / Which country are you from? (Japan/Япон гэх мэт)"
+
+  utter_ask_interest:
+    - text: "Сонирхол? / What do you like? (байгаль/nature, соёл/culture, адал/adventure, тайван/quiet)"
+
+  utter_ask_duration_days:
+    - text: "Хэдэн өдөр аялах вэ? / Trip duration (days)? (ж: 5, 7, 10)"
+
+  utter_ask_travel_month:
+    - text: "Хэдэн сард ирэх вэ? / Which month? (ж: 7 сар / month 7)"
+
+  utter_ask_destination:
+    - text: "Аль газар/аймаг руу очих сонирхолтой вэ? / Preferred destination? (ж: Хөвсгөл, Өмнөговь, УБ, эсвэл мэдэхгүй)"
+
+  utter_ask_group_size:
+    - text: "Хэдэн хүнтэй явах вэ? / Group size? (1, 2, 4...)"
+
+  utter_ask_travel_style:
+    - text: "Style? (backpack / comfort / luxury) | (хэмнэлттэй / тухтай / тансаг)"
+
+  utter_ask_need_guide:
+    - text: "Guide хэрэгтэй юу? / Need a guide? (тийм/үгүй | yes/no)"
+
+  utter_ask_need_hotel:
+    - text: "Байр хэрэгтэй юу? / Need hotel? (тийм/үгүй | yes/no)"
+
+  utter_goodbye:
+    - text: "Баяртай! / Bye! 🇲🇳"
 
 session_config:
   session_expiration_time: 60

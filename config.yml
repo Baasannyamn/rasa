@@ -1,13 +1,31 @@
 version: "3.1"
-
 language: "en"
 
 pipeline:
 - name: WhitespaceTokenizer
+- name: RegexFeaturizer
+- name: LexicalSyntacticFeaturizer
+
 - name: CountVectorsFeaturizer
+- name: CountVectorsFeaturizer
+  analyzer: char_wb
+  min_ngram: 3
+  max_ngram: 5
+
 - name: DIETClassifier
-  epochs: 30
+  epochs: 80
+  constrain_similarities: true
+
+- name: EntitySynonymMapper
+
+  # ✅ Энэ нэмэгдсэнээр танихгүй үгс -> nlu_fallback болж хувирна
+- name: FallbackClassifier
+  threshold: 0.65
+  ambiguity_threshold: 0.10
 
 policies:
 - name: RulePolicy
-assistant_id: 20260114-092441-quiet-keyword
+  enable_fallback_prediction: true
+  core_fallback_threshold: 0.30
+  core_fallback_action_name: "utter_menu"
+assistant_id: 20260114-171047-nippy-guitar
