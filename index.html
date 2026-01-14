@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="mn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MUIS AI Assistant</title>
+  <style>
+    :root{
+      --bg:#050a14;
+      --border:rgba(255,255,255,.10);
+      --text:#e8eefc;
+      --muted:rgba(232,238,252,.65);
+      --bubble:#e9edf2;
+      --bubbleText:#111827;
+      --user:#5b86ff;
+      --chip:#0f1a35;
+      --chipBorder:rgba(255,255,255,.14);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;height:100vh;overflow:hidden;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--text);
+      background: radial-gradient(1000px 600px at 50% 20%, rgba(64,86,165,.35), transparent 60%),
+                  radial-gradient(900px 600px at 70% 70%, rgba(40,120,255,.18), transparent 65%),
+                  linear-gradient(180deg, #050a14 0%, #040815 100%);
+    }
+    .app{display:flex;height:100vh;width:100vw;}
+    .sidebar{
+      width:300px;min-width:260px;
+      background: linear-gradient(180deg, rgba(13,20,40,.9), rgba(7,10,20,.92));
+      border-right:1px solid var(--border);
+      padding:16px;
+      display:flex;flex-direction:column;gap:12px;
+    }
+    .btn{
+      height:46px;border-radius:12px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      cursor:pointer;
+      display:flex;align-items:center;gap:10px;
+      padding:0 14px;
+      font-weight:650;
+    }
+    .btn:hover{background: rgba(255,255,255,.06)}
+    .chatList{display:flex;flex-direction:column;gap:10px;overflow:auto;padding-right:4px;}
+    .chatItem{
+      height:46px;border-radius:12px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      padding:0 12px;
+      display:flex;align-items:center;
+      cursor:pointer;user-select:none;
+    }
+    .chatItem.active{background: rgba(91,134,255,.15); border-color: rgba(91,134,255,.35);}
+
+    .main{flex:1;display:flex;flex-direction:column;min-width:0;}
+    .topbar{
+      height:70px;display:flex;align-items:center;justify-content:space-between;
+      padding:0 24px;border-bottom:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(8,12,25,.85), rgba(8,12,25,.35));
+    }
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.2px;}
+    .orb{
+      width:34px;height:34px;border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #89a7ff 0%, #4f84ff 40%, #1b2b6a 70%, #0b1324 100%);
+      box-shadow: 0 0 25px rgba(91,134,255,.25);
+    }
+    .toplinks{display:flex;align-items:center;gap:14px;font-weight:650;}
+    .toplinks a{color:var(--text);text-decoration:none;opacity:.9}
+    .toplinks a:hover{opacity:1}
+    .langToggle{
+      display:flex;gap:8px;align-items:center;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      border-radius:999px;
+      padding:6px;
+    }
+    .langBtn{
+      border:none;cursor:pointer;
+      background: transparent;
+      color: var(--text);
+      font-weight:900;
+      padding:8px 12px;
+      border-radius:999px;
+      opacity:.85;
+    }
+    .langBtn.active{background: rgba(91,134,255,.22); opacity:1}
+    .avatar{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background: rgba(255,255,255,.04);}
+
+    .hero{text-align:center;padding:18px 16px 6px;border-bottom:1px solid rgba(255,255,255,.06);}
+    .hero h1{margin:6px 0 4px;font-size:34px}
+    .hero p{margin:0 0 10px;color:var(--muted)}
+
+    .messages{flex:1;overflow:auto;padding:18px 18px 160px;}
+    .row{display:flex;gap:10px;margin:14px 0;}
+    .row.bot{justify-content:flex-start;}
+    .row.user{justify-content:flex-end;}
+    .bubble{
+      max-width:min(720px, 78vw);
+      padding:14px 16px;border-radius:14px;
+      line-height:1.35;white-space:pre-wrap;border:1px solid rgba(0,0,0,.08);
+    }
+    .bot .bubble{background:var(--bubble);color:var(--bubbleText);}
+    .user .bubble{background:var(--user);color:#0b1022;border:1px solid rgba(255,255,255,.12);font-weight:650;}
+    .botIcon{
+      width:34px;height:34px;border-radius:50%;
+      background: rgba(255,255,255,.06);
+      border:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;
+      flex:0 0 auto;margin-top:2px;
+    }
+
+    .chipsWrap{
+      position:fixed;left:300px;right:0;bottom:86px;
+      display:flex;justify-content:center;
+    }
+    .chips{
+      display:flex;gap:10px;flex-wrap:wrap;
+      background: rgba(3,6,14,.40);
+      border:1px solid rgba(255,255,255,.10);
+      padding:10px 12px;border-radius:16px;
+      backdrop-filter: blur(10px);
+      max-width: min(980px, 92vw);
+    }
+    .chip{
+      background: var(--chip);color: var(--text);
+      border:1px solid var(--chipBorder);
+      padding:8px 12px;border-radius:999px;
+      cursor:pointer;font-weight:800;user-select:none;
+    }
+    .chip:hover{border-color: rgba(91,134,255,.45)}
+
+    .inputBar{
+      position:fixed;left:300px;right:0;bottom:0;height:80px;
+      border-top:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(8,12,25,.25), rgba(8,12,25,.75));
+      display:flex;align-items:center;gap:14px;padding:0 18px;
+    }
+    .input{
+      flex:1;height:46px;border-radius:12px;border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color:var(--text);padding:0 14px;outline:none;
+    }
+    .send{
+      width:120px;height:46px;border-radius:12px;border:none;
+      background: var(--user);font-weight:900;letter-spacing:.5px;cursor:pointer;
+    }
+    .send:hover{filter:brightness(1.04)}
+    @media (max-width: 900px){
+      .sidebar{display:none}
+      .chipsWrap,.inputBar{left:0}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <button class="btn" id="newChatBtn">＋ New Chat</button>
+      <div class="chatList" id="chatList"></div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="brand"><div class="orb"></div><div>MUIS AI Assistant</div></div>
+        <div class="toplinks">
+          <div class="langToggle">
+            <button class="langBtn" id="mnBtn">MN</button>
+            <button class="langBtn" id="enBtn">EN</button>
+          </div>
+          <a href="./signin.html">Sign in</a>
+          <a href="./signup.html">Sign up</a>
+          <div class="avatar"></div>
+        </div>
+      </div>
+
+      <div class="hero">
+        <h1>Welcome to MUIS AI Assistant</h1>
+        <p>Ask me anything</p>
+      </div>
+
+      <div class="messages" id="messages"></div>
+    </main>
+  </div>
+
+  <div class="chipsWrap">
+    <div class="chips" id="chips">
+      <div class="chip" data-text="сайн уу">сайн уу</div>
+      <div class="chip" data-text="аялал">аялал</div>
+      <div class="chip" data-text="тусламж">тусламж</div>
+      <div class="chip" data-text="reset">reset</div>
+
+      <div class="chip" data-text="2 сая">2 сая</div>
+      <div class="chip" data-text="Япон">Япон</div>
+      <div class="chip" data-text="байгаль">байгаль</div>
+      <div class="chip" data-text="7">7 өдөр</div>
+      <div class="chip" data-text="7 сар">7 сар</div>
+
+      <div class="chip" data-text="маршрут">маршрут</div>
+      <div class="chip" data-text="packing">packing</div>
+      <div class="chip" data-text="budget">budget</div>
+    </div>
+  </div>
+
+  <div class="inputBar">
+    <input class="input" id="msg" placeholder="Асуултаа энд бичнэ үү..." />
+    <button class="send" id="sendBtn">SEND</button>
+  </div>
+
+<script>
+  const RASA_URL = "http://localhost:5005/webhooks/rest/webhook";
+  const STORAGE_KEY = "muis_ai_ui_state_final_pack_v2";
+  const LANG_KEY = "muis_ai_lang";
+
+  const state = loadState();
+
+  const chatListEl = document.getElementById("chatList");
+  const messagesEl = document.getElementById("messages");
+  const msgEl = document.getElementById("msg");
+  const sendBtn = document.getElementById("sendBtn");
+  const newChatBtn = document.getElementById("newChatBtn");
+  const chipsEl = document.getElementById("chips");
+
+  const mnBtn = document.getElementById("mnBtn");
+  const enBtn = document.getElementById("enBtn");
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        const parsed = JSON.parse(raw);
+        if(parsed && parsed.chats && parsed.order && parsed.activeChatId){
+          return parsed;
+        }
+      }
+    }catch(e){}
+    const id = "chat_" + Date.now();
+    return {
+      activeChatId: id,
+      order: [id],
+      chats: {
+        [id]: {
+          id,
+          title: "New chat",
+          messages: [
+            { role:"bot", text:"Сайн байна уу 👋 / Hello 👋 (MN/EN хэлээ дээрх товчоор солино.)" },
+            { role:"bot", text:"Эхлэх: аялал | Тусламж: тусламж | Reset: reset" }
+          ]
+        }
+      }
+    };
+  }
+  function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function scrollToBottom(){ messagesEl.scrollTop = messagesEl.scrollHeight; }
+
+  function renderChatList(){
+    chatListEl.innerHTML = "";
+    for(const id of state.order){
+      const chat = state.chats[id];
+      const div = document.createElement("div");
+      div.className = "chatItem" + (id === state.activeChatId ? " active" : "");
+      div.textContent = chat.title || id;
+      div.onclick = () => switchChat(id);
+      chatListEl.appendChild(div);
+    }
+  }
+
+  function renderMessages(){
+    const chat = state.chats[state.activeChatId];
+    messagesEl.innerHTML = "";
+    for(const m of chat.messages){
+      const row = document.createElement("div");
+      row.className = "row " + (m.role === "user" ? "user" : "bot");
+
+      if(m.role === "bot"){
+        const icon = document.createElement("div");
+        icon.className = "botIcon";
+        icon.textContent = "🤖";
+        row.appendChild(icon);
+      }
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = m.text;
+      row.appendChild(bubble);
+
+      messagesEl.appendChild(row);
+    }
+    scrollToBottom();
+  }
+
+  function switchChat(id){
+    if(!state.chats[id]) return;
+    state.activeChatId = id;
+    saveState();
+    renderChatList();
+    renderMessages();
+  }
+
+  function createNewChat(){
+    const id = "chat_" + Date.now();
+    state.chats[id] = {
+      id,
+      title: "New chat",
+      messages: [
+        { role:"bot", text:"Сайн байна уу 👋 / Hello 👋" },
+        { role:"bot", text:"Эхлэх: аялал | Help: тусламж | Reset: reset" }
+      ]
+    };
+    state.order.unshift(id);
+    state.activeChatId = id;
+    saveState();
+    renderChatList();
+    renderMessages();
+
+    // optional: reset on bot side
+    silentSend("reset");
+    // apply current language
+    silentSend(getLang() === "en" ? "LANG_EN" : "LANG_MN");
+  }
+
+  function addMessage(role, text){
+    const chat = state.chats[state.activeChatId];
+    chat.messages.push({ role, text });
+    if(role === "user" && (chat.title === "New chat" || !chat.title)){
+      chat.title = text.slice(0, 18);
+    }
+    saveState();
+    renderChatList();
+    renderMessages();
+  }
+
+  async function sendToRasa(userText){
+    const payload = { sender: state.activeChatId, message: userText };
+    const res = await fetch(RASA_URL, {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify(payload)
+    });
+    if(!res.ok) throw new Error("Failed to fetch");
+    return await res.json();
+  }
+
+  // ✅ silent (no user bubble)
+  async function silentSend(text){
+    try{
+      const replies = await sendToRasa(text);
+      if(Array.isArray(replies) && replies.length){
+        for(const r of replies){ if(r.text) addMessage("bot", r.text); }
+      }
+    }catch(e){}
+  }
+
+  async function handleSend(text){
+    const t = (text || msgEl.value || "").trim();
+    if(!t) return;
+
+    msgEl.value = "";
+    addMessage("user", t);
+
+    try{
+      const replies = await sendToRasa(t);
+      if(Array.isArray(replies) && replies.length){
+        for(const r of replies){
+          if(r.text) addMessage("bot", r.text);
+        }
+      } else {
+        addMessage("bot", "Уучлаарай, одоогоор хариу олдсонгүй. 'тусламж' гэж бичээд үзээрэй.")
+      }
+    }catch(err){
+      addMessage("bot", "⚠️ Холболтын алдаа. Rasa (5005) + Actions (5055) асаалттай эсэхийг шалгаарай.");
+    }
+  }
+
+  sendBtn.addEventListener("click", () => handleSend());
+  msgEl.addEventListener("keydown", (e)=>{ if(e.key === "Enter") handleSend(); });
+  newChatBtn.addEventListener("click", createNewChat);
+
+  chipsEl.addEventListener("click", (e)=>{
+    const chip = e.target.closest(".chip");
+    if(!chip) return;
+    handleSend(chip.dataset.text);
+  });
+
+  // ---- Language toggle ----
+  function setLang(lang){
+    localStorage.setItem(LANG_KEY, lang);
+    renderLangButtons();
+    // silent set
+    silentSend(lang === "en" ? "LANG_EN" : "LANG_MN");
+  }
+  function getLang(){ return localStorage.getItem(LANG_KEY) || "mn"; }
+  function renderLangButtons(){
+    const lang = getLang();
+    mnBtn.classList.toggle("active", lang === "mn");
+    enBtn.classList.toggle("active", lang === "en");
+  }
+  mnBtn.addEventListener("click", ()=> setLang("mn"));
+  enBtn.addEventListener("click", ()=> setLang("en"));
+
+  // INIT
+  renderLangButtons();
+  renderChatList();
+  renderMessages();
+  // silent apply on load
+  silentSend(getLang() === "en" ? "LANG_EN" : "LANG_MN");
+</script>
+</body>
+</html>
