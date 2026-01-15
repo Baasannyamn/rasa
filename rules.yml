@@ -4,72 +4,73 @@ rules:
   - rule: Greet
     steps:
       - intent: greet
-      - action: action_greet
+      - action: utter_greet
 
-  - rule: Help
-    steps:
-      - intent: help
-      - action: action_help
-
-  - rule: Set language
-    steps:
-      - intent: set_language
-      - action: action_set_language
-
-  - rule: Start travel -> activate form
+  - rule: Start travel form
     steps:
       - intent: travel_start
       - action: travel_form
       - active_loop: travel_form
 
-  - rule: Submit travel form -> build plan
+  # ✅ INTENT ХАМААРАХГҮЙ үргэлжлүүлэх (loop давтагдах гол асуудлыг багасгана)
+  - rule: Continue travel form
+    condition:
+      - active_loop: travel_form
+    steps:
+      - action: travel_form
+
+  - rule: Submit travel form
     condition:
       - active_loop: travel_form
     steps:
       - action: travel_form
       - active_loop: null
-      - action: action_submit_travel_plan
+      - action: action_trip_summary
 
   - rule: Ask places
     steps:
       - intent: ask_places
-      - action: action_answer_places
+      - action: action_places
 
   - rule: Ask accommodation
     steps:
       - intent: ask_accommodation
-      - action: action_answer_accommodation
+      - action: action_accommodation
 
   - rule: Ask weather
     steps:
       - intent: ask_weather
-      - action: action_answer_weather
+      - action: action_weather
 
   - rule: Ask transport
     steps:
       - intent: ask_transport
-      - action: action_answer_transport
+      - action: action_transport
 
   - rule: Ask safety
     steps:
       - intent: ask_safety
-      - action: action_answer_safety
+      - action: action_safety
 
   - rule: Ask cost
     steps:
       - intent: ask_cost
-      - action: action_answer_cost
+      - action: action_cost
 
-  - rule: Detailed breakdown
+  - rule: Goodbye
     steps:
-      - intent: detailed_breakdown
-      - action: action_detailed_breakdown
+      - intent: goodbye
+      - action: utter_goodbye
 
-  - rule: Reset
+  - rule: Thank you
     steps:
-      - intent: reset
-      - action: action_reset_routing
-      - action: utter_reset_done
+      - intent: thankyou
+      - action: utter_thankyou
+
+  - rule: Bot challenge
+    steps:
+      - intent: bot_challenge
+      - action: utter_bot_challenge
 
   - rule: Fallback
     steps:

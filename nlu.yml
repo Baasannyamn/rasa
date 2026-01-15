@@ -3,156 +3,120 @@ version: "3.1"
 nlu:
   - intent: greet
     examples: |
-      - Сайн уу
-      - Сайн байна уу
-      - Мэнд
+      - сайн уу
+      - сайн байна уу
       - hello
       - hi
       - hey
 
-  - intent: help
-    examples: |
-      - тусламж
-      - help
-      - юу хийж чадах вэ
-      - how to use
-
   - intent: goodbye
     examples: |
       - баяртай
-      - дараа уулзъя
       - bye
       - see you
+      - уулзъя
 
   - intent: thankyou
     examples: |
       - баярлалаа
-      - маш их баярлалаа
       - thanks
       - thank you
 
-  - intent: reset
+  - intent: bot_challenge
     examples: |
-      - reset
-      - шинээр эхэл
-      - эхнээс нь
-      - start over
-
-  - intent: set_language
-    examples: |
-      - /set_language{"lang":"mn"}
-      - /set_language{"lang":"en"}
-      - монгол
-      - english
-      - MN
-      - EN
+      - чи хүн үү
+      - are you a bot
+      - чи bot уу
 
   - intent: travel_start
     examples: |
       - аялал
-      - аяллаа төлөвлөе
-      - энэ зун монголд аялах гэж байна
-      - би монголд явах гэж байна
+      - аялал төлөвлөе
+      - монголд аялмаар байна
       - travel
-      - plan my trip
-      - I want to travel to Mongolia
+      - plan a trip to mongolia
+      - help me plan mongolia
+
+  - intent: provide_country
+    examples: |
+      - [Japan](country)
+      - [Korea](country)
+      - [USA](country)
+      - [Germany](country)
+      - I am from [France](country)
+      - Би [Солонгос](country)-оос ирнэ
+      - [Хятад](country)
+
+  - intent: provide_days
+    examples: |
+      - 3
+      - 5 өдөр
+      - 10 days
+      - around 7
+
+  - intent: provide_budget
+    examples: |
+      - 500
+      - 1200 usd
+      - $800
+      - 2,000,000 mnt
+      - 1500 dollars
+
+  - intent: provide_interest
+    examples: |
+      - [nature](interest)
+      - [culture](interest)
+      - [adventure](interest)
+      - [city](interest)
+      - [food](interest)
+      - [photography](interest)
+      - I like [nature](interest) and [culture](interest)
+      - надад [адал явдал](interest) таалагдана
+
+  - intent: provide_month
+    examples: |
+      - [7](month)
+      - [7 сар](month)
+      - [July](month)
+      - [August](month)
+      - [12](month)
+      - [12 сар](month)
 
   - intent: ask_places
     examples: |
       - хаашаа очих вэ
-      - өмнө нь харж байгаагүй газар санал болго
-      - очих газрууд санал болго
-      - where should I go
-      - recommend places
+      - ямар газрууд байна
       - places to visit
+      - where should I go
 
   - intent: ask_accommodation
     examples: |
       - хаана байрлах вэ
-      - байрлах газар санал болго
-      - ger camp санал болго
+      - буудал санал болго
       - accommodation
       - where to stay
-      - hotel or ger camp
 
   - intent: ask_weather
     examples: |
       - цаг агаар ямар вэ
-      - 7 сард ямар байдаг вэ
       - weather
-      - what is the weather like
+      - is it cold in july
 
   - intent: ask_transport
     examples: |
-      - яаж зорчих вэ
-      - унаа
+      - яаж явах вэ
+      - унаа тээвэр
       - transport
-      - how to get around
-      - do I need a 4x4
+      - how to travel around
 
   - intent: ask_safety
     examples: |
       - аюулгүй юу
-      - анхаарах зүйлс
-      - safety
-      - is it safe
+      - safety tips
+      - is mongolia safe
 
   - intent: ask_cost
     examples: |
       - зардал ямар вэ
-      - төсөв хэд байвал болох вэ
       - cost
-      - budget estimate
-
-  - intent: detailed_breakdown
-    examples: |
-      - нарийн тооцоо
-      - зардлыг задалж өг
-      - detailed breakdown
-      - split the costs
-      - breakdown please
-
-  - intent: provide_country
-    examples: |
-      - Би Японоос ирнэ
-      - АНУ
-      - Солонгос
-      - from Japan
-      - coming from USA
-      - I am from Germany
-
-  - intent: provide_days
-    examples: |
-      - 7 өдөр
-      - 10 өдөр
-      - 14 хоног
-      - for 7 days
-      - 10 days
-
-  - intent: provide_budget
-    examples: |
-      - төсөв 500$
-      - 1500$
-      - 2 сая₮
-      - budget is 800$
-      - around $1200
-
-  - intent: provide_interest
-    examples: |
-      - байгаль
-      - соёл
-      - адал явдал
-      - тайван
-      - nature
-      - culture
-      - adventure
-      - quiet
-
-  - intent: provide_month
-    examples: |
-      - 6 сар
-      - 7 сар
-      - 8 сар
-      - June
-      - July
-      - August
+      - how expensive is it

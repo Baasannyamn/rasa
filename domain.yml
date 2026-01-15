@@ -2,44 +2,28 @@ version: "3.1"
 
 intents:
   - greet
-  - help
   - goodbye
   - thankyou
-  - reset
-  - set_language
-
   - travel_start
   - provide_country
   - provide_days
   - provide_budget
   - provide_interest
   - provide_month
-
   - ask_places
   - ask_accommodation
   - ask_weather
   - ask_transport
   - ask_safety
   - ask_cost
-  - detailed_breakdown
+  - bot_challenge
 
 entities:
-  - lang
   - country
-  - days
-  - budget
   - interest
   - month
 
 slots:
-  lang:
-    type: text
-    influence_conversation: true
-    initial_value: "en"
-    mappings:
-      - type: from_entity
-        entity: lang
-
   country:
     type: text
     influence_conversation: true
@@ -52,22 +36,18 @@ slots:
             requested_slot: country
 
   days:
-    type: text
+    type: float
     influence_conversation: true
     mappings:
-      - type: from_entity
-        entity: days
       - type: from_text
         conditions:
           - active_loop: travel_form
             requested_slot: days
 
   budget:
-    type: text
+    type: float
     influence_conversation: true
     mappings:
-      - type: from_entity
-        entity: budget
       - type: from_text
         conditions:
           - active_loop: travel_form
@@ -105,37 +85,46 @@ forms:
       - month
 
 responses:
-  utter_ask_country:
-    - text: "Та аль улсаас ирэх вэ? (ж: Япон, АНУ, Солонгос) / Which country are you coming from? (e.g., Japan, USA, Korea)"
-  utter_ask_days:
-    - text: "Хэдэн өдөр аялах вэ? (ж: 7, 10, 14) / How many days? (e.g., 7, 10, 14)"
-  utter_ask_budget:
-    - text: "Нийт төсөв ойролцоогоор хэд вэ? (ж: 500$, 2 сая₮) / What’s your budget? (e.g., $500, $1500)"
-  utter_ask_interest:
-    - text: "Сонирхол: байгаль / соёл / адал / тайван / Preference: nature / culture / adventure / quiet"
-  utter_ask_month:
-    - text: "Ямар сард ирэх вэ? (6 сар/7 сар/8 сар) / Which month? (June/July/August)"
+  utter_greet:
+    - text: "Сайн байна уу 👋 Би таны аяллын туслах. 'аялал' гэж бичээд эхлүүлээрэй.||Hello 👋 I’m your travel assistant. Type 'travel' to start."
 
-  utter_reset_done:
-    - text: "✅ Reset хийлээ. ‘аялал’ эсвэл ‘travel’ гэж бичээрэй."
+  utter_goodbye:
+    - text: "Баяртай! Дахин уулзъя 😊||Bye! See you again 😊"
+
+  utter_thankyou:
+    - text: "Зүгээр ээ 😊 Нэмэлт асуулт байвал асуугаарай.||You’re welcome 😊 Ask anytime."
+
+  utter_ask_country:
+    - text: "Та аль улсаас ирэх гэж байна? (Ж: Japan, Korea, USA)||Which country are you coming from? (e.g., Japan, Korea, USA)"
+
+  utter_ask_days:
+    - text: "Хэдэн өдөр аялах вэ? (Зөвхөн тоо) ||How many days will you travel? (number only)"
+
+  utter_ask_budget:
+    - text: "Таны нийт төсөв ойролцоогоор хэд вэ? (USD эсвэл MNT тоо) ||What’s your total budget? (number in USD or MNT)"
+
+  utter_ask_interest:
+    - text: "Та юу сонирхдог вэ? (nature, culture, adventure, city, food, photography) ||What are you into? (nature, culture, adventure, city, food, photography)"
+
+  utter_ask_month:
+    - text: "Хэдэн сард ирэх вэ? (1-12 эсвэл 'July', '7 сар') ||Which month are you coming? (1-12 or 'July', '7 сар')"
+
+  utter_bot_challenge:
+    - text: "Би бол хиймэл оюун ухаантай чатбот 😄||I’m an AI chatbot 😄"
+
+  utter_fallback:
+    - text: "Уучлаарай, ойлгосонгүй. Дахиад өөрөөр бичээд өгөөч.||Sorry, I didn’t get that. Please rephrase."
 
 actions:
-  - action_greet
-  - action_help
-  - action_set_language
-  - action_reset_routing
-
-  - action_submit_travel_plan
-  - action_answer_places
-  - action_answer_accommodation
-  - action_answer_weather
-  - action_answer_transport
-  - action_answer_safety
-  - action_answer_cost
-  - action_detailed_breakdown
-
+  - action_trip_summary
+  - action_places
+  - action_accommodation
+  - action_weather
+  - action_transport
+  - action_safety
+  - action_cost
   - action_fallback
 
 session_config:
   session_expiration_time: 60
-  carry_over_slots_to_new_session: true
+  carry_over_slots_to_new_session: false

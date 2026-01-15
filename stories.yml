@@ -1,10 +1,10 @@
 version: "3.1"
 
 stories:
-  - story: Travel happy path
+  - story: travel happy path
     steps:
       - intent: travel_start
       - action: travel_form
       - active_loop: travel_form
       - active_loop: null
-      - action: action_submit_travel_plan
+      - action: action_trip_summary
