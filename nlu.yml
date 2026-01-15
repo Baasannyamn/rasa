@@ -1,164 +1,68 @@
 version: "3.1"
-
 nlu:
-- intent: greet
-  examples: |
-    - сайн уу
-    - сайн байна уу
-    - hello
-    - hi
-    - hey
+  - intent: greet
+    examples: |
+      - hi
+      - hello
+      - hey
+      - сайн уу
+      - мэнд
 
-- intent: menu
-  examples: |
-    - menu
-    - цэс
-    - меню
+  - intent: goodbye
+    examples: |
+      - bye
+      - goodbye
+      - баяртай
+      - за баярлалаа
 
-- intent: help
-  examples: |
-    - тусламж
-    - help
-    - яаж ажиллах вэ
-    - how to use
+  - intent: set_language
+    examples: |
+      - EN
+      - MN
+      - English
+      - Mongolian
+      - хэлээ монголоор
+      - switch to english
 
-- intent: start_trip
-  examples: |
-    - аялал
-    - аяллын зөвлөгөө
-    - санал болго
-    - trip
-    - travel
-    - start travel
+  - intent: start_trip_planning
+    examples: |
+      - I want to plan a trip to Mongolia
+      - help me plan Mongolia travel
+      - Монголд аялах төлөвлөгөө гаргая
+      - аяллаа төлөвлөе
 
-- intent: reset_chat
-  examples: |
-    - reset
-    - дахин эхлэе
-    - шинээр эхэл
-    - new chat
-    - restart chat
+  - intent: provide_country
+    examples: |
+      - I'm from [Korea](country)
+      - coming from [USA](country)
+      - би [Герман](country)-аас
+      - [Japan](country)
 
-- intent: goodbye
-  examples: |
-    - баяртай
-    - bye
-    - see you
+  - intent: provide_travel_style
+    examples: |
+      - I like [nature](travel_style)
+      - [adventure](travel_style) please
+      - [culture](travel_style)
+      - [quiet](travel_style) газар
+      - [family](travel_style)
 
-- intent: set_lang_mn
-  examples: |
-    - LANG_MN
-    - mn
-    - mongolian
-    - монгол
-    - монголоор
+  - intent: provide_duration
+    examples: |
+      - [5](duration_days) days
+      - [7](duration_days)
+      - [10](duration_days) өдөр
 
-- intent: set_lang_en
-  examples: |
-    - LANG_EN
-    - en
-    - english
-    - англи
-    - англиар
+  - intent: provide_budget
+    examples: |
+      - [low](budget)
+      - [mid](budget)
+      - [high](budget)
+      - төсөв [mid](budget)
 
-- intent: provide_budget
-  examples: |
-    - 2000000
-    - 2 сая
-    - 3.5 сая
-    - 500$
-    - 800 usd
-    - low
-    - medium
-    - high
-    - бага
-    - дунд
-    - өндөр
-    - төсөв 2 сая
-
-- intent: provide_country
-  examples: |
-    - [Япон](country)
-    - [Japan](country)
-    - [Солонгос](country)
-    - [Korea](country)
-    - [АНУ](country)
-    - [USA](country)
-    - [Казахстан](country)
-    - [Thailand](country)
-    - [Тайланд](country)
-
-- intent: provide_interest
-  examples: |
-    - [байгаль](interest)
-    - [соёл](interest)
-    - [адал явдал](interest)
-    - [тайван](interest)
-    - nature
-    - culture
-    - adventure
-    - quiet
-
-- intent: provide_duration
-  examples: |
-    - [5](number)
-    - [7](number)
-    - [10](number)
-    - 7 өдөр
-    - 5 days
-
-- intent: provide_month
-  examples: |
-    - [1 сар](month)
-    - [6 сар](month)
-    - [7 сар](month)
-    - [8 сар](month)
-    - [12 сар](month)
-    - month [7](month)
-    - 7
-    - 8
-
-- intent: provide_destination
-  examples: |
-    - [Хөвсгөл](destination)
-    - [Өмнөговь](destination)
-    - [Архангай](destination)
-    - [Баян-Өлгий](destination)
-    - [Улаанбаатар](destination)
-    - [Дархан](destination)
-    - [Эрдэнэт](destination)
-    - мэдэхгүй
-    - not sure
-    - anywhere
-
-- intent: provide_group_size
-  examples: |
-    - [1](number) хүн
-    - [2](number)
-    - [4](number) хүнтэй
-    - we are [3](number)
-
-- intent: provide_style
-  examples: |
-    - backpack
-    - comfort
-    - luxury
-    - хэмнэлттэй
-    - тухтай
-    - тансаг
-
-- intent: provide_yes
-  examples: |
-    - тийм
-    - хэрэгтэй
-    - болно
-    - yes
-    - ok
-
-- intent: provide_no
-  examples: |
-    - үгүй
-    - хэрэггүй
-    - шаардлагагүй
-    - no
-    - not needed
+  - intent: provide_season
+    examples: |
+      - [summer](season)
+      - [spring](season)
+      - [autumn](season)
+      - [winter](season)
+      - зуны [summer](season)

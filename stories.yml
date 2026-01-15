@@ -1,2 +1,10 @@
 version: "3.1"
-stories: []
+
+stories:
+  - story: Plan a trip basic
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: start_trip_planning
+      - action: trip_form
+      - active_loop: trip_form
