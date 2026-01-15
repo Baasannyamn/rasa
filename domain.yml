@@ -2,42 +2,43 @@ version: "3.1"
 
 intents:
   - greet
+  - help
   - goodbye
-  - affirm
-  - deny
+  - thankyou
+  - reset
   - set_language
-  - start_trip_planning
+
+  - travel_start
   - provide_country
-  - provide_travel_style
+  - provide_days
   - provide_budget
-  - provide_duration
-  - provide_season
+  - provide_interest
+  - provide_month
+
+  - ask_places
   - ask_accommodation
-  - ask_destinations
+  - ask_weather
+  - ask_transport
+  - ask_safety
+  - ask_cost
+  - detailed_breakdown
 
 entities:
-  - country
-  - travel_style
-  - budget
-  - duration_days
-  - season
   - lang
+  - country
+  - days
+  - budget
+  - interest
+  - month
 
 slots:
   lang:
     type: text
     influence_conversation: true
+    initial_value: "en"
     mappings:
       - type: from_entity
         entity: lang
-      - type: from_intent
-        intent: set_language
-        value: "en"
-        conditions:
-          - active_loop: null
-      - type: from_text
-        conditions:
-          - active_loop: null
 
   country:
     type: text
@@ -45,13 +46,21 @@ slots:
     mappings:
       - type: from_entity
         entity: country
+      - type: from_text
+        conditions:
+          - active_loop: travel_form
+            requested_slot: country
 
-  travel_style:
+  days:
     type: text
     influence_conversation: true
     mappings:
       - type: from_entity
-        entity: travel_style
+        entity: days
+      - type: from_text
+        conditions:
+          - active_loop: travel_form
+            requested_slot: days
 
   budget:
     type: text
@@ -59,88 +68,74 @@ slots:
     mappings:
       - type: from_entity
         entity: budget
+      - type: from_text
+        conditions:
+          - active_loop: travel_form
+            requested_slot: budget
 
-  duration_days:
+  interest:
     type: text
     influence_conversation: true
     mappings:
       - type: from_entity
-        entity: duration_days
+        entity: interest
+      - type: from_text
+        conditions:
+          - active_loop: travel_form
+            requested_slot: interest
 
-  season:
+  month:
     type: text
     influence_conversation: true
     mappings:
       - type: from_entity
-        entity: season
+        entity: month
+      - type: from_text
+        conditions:
+          - active_loop: travel_form
+            requested_slot: month
 
 forms:
-  trip_form:
+  travel_form:
     required_slots:
       - country
-      - travel_style
-      - duration_days
+      - days
       - budget
-      - season
+      - interest
+      - month
 
 responses:
-  utter_greet:
-    - condition:
-        - type: slot
-          name: lang
-          value: "mn"
-      text: "Сайн уу 👋 Би Монгол аяллын зөвлөх бот. Хэлээ солиё: 'MN' эсвэл 'EN' гэж бичээрэй."
-    - text: "Hi 👋 I’m your Mongolia travel advisor. Type 'MN' or 'EN' to switch language."
-
   utter_ask_country:
-    - condition:
-        - type: slot
-          name: lang
-          value: "mn"
-      text: "Та аль улсаас ирэх вэ? (ж: Korea, USA, Germany)"
-    - text: "Which country are you coming from? (e.g., Korea, USA, Germany)"
-
-  utter_ask_travel_style:
-    - condition:
-        - type: slot
-          name: lang
-          value: "mn"
-      text: "Ямар төрлийн аялал сонирхдог вэ? (nature, culture, adventure, quiet, family)"
-    - text: "What travel style do you prefer? (nature, culture, adventure, quiet, family)"
-
-  utter_ask_duration_days:
-    - condition:
-        - type: slot
-          name: lang
-          value: "mn"
-      text: "Хэдэн өдөр аялж амрах вэ? (ж: 5, 7, 10)"
-    - text: "How many days are you planning to travel? (e.g., 5, 7, 10)"
-
+    - text: "Та аль улсаас ирэх вэ? (ж: Япон, АНУ, Солонгос) / Which country are you coming from? (e.g., Japan, USA, Korea)"
+  utter_ask_days:
+    - text: "Хэдэн өдөр аялах вэ? (ж: 7, 10, 14) / How many days? (e.g., 7, 10, 14)"
   utter_ask_budget:
-    - condition:
-        - type: slot
-          name: lang
-          value: "mn"
-      text: "Төсөв ямар түвшинд вэ? (low / mid / high)"
-    - text: "What’s your budget level? (low / mid / high)"
+    - text: "Нийт төсөв ойролцоогоор хэд вэ? (ж: 500$, 2 сая₮) / What’s your budget? (e.g., $500, $1500)"
+  utter_ask_interest:
+    - text: "Сонирхол: байгаль / соёл / адал / тайван / Preference: nature / culture / adventure / quiet"
+  utter_ask_month:
+    - text: "Ямар сард ирэх вэ? (6 сар/7 сар/8 сар) / Which month? (June/July/August)"
 
-  utter_ask_season:
-    - condition:
-        - type: slot
-          name: lang
-          value: "mn"
-      text: "Ямар улирал/сард ирэх вэ? (summer / spring / autumn / winter)"
-    - text: "Which season/month are you coming? (summer / spring / autumn / winter)"
-
-  utter_goodbye:
-    - condition:
-        - type: slot
-          name: lang
-          value: "mn"
-      text: "Баяртай! Аяллын төлөвлөгөөг хүсвэл үргэлжлүүлээд бичээрэй 🙂"
-    - text: "Bye! Message me anytime to continue planning 🙂"
+  utter_reset_done:
+    - text: "✅ Reset хийлээ. ‘аялал’ эсвэл ‘travel’ гэж бичээрэй."
 
 actions:
+  - action_greet
+  - action_help
   - action_set_language
-  - action_recommend_itinerary
-  - action_suggest_accommodation
+  - action_reset_routing
+
+  - action_submit_travel_plan
+  - action_answer_places
+  - action_answer_accommodation
+  - action_answer_weather
+  - action_answer_transport
+  - action_answer_safety
+  - action_answer_cost
+  - action_detailed_breakdown
+
+  - action_fallback
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

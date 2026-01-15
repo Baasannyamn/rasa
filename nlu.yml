@@ -1,68 +1,158 @@
 version: "3.1"
+
 nlu:
   - intent: greet
     examples: |
-      - hi
+      - Сайн уу
+      - Сайн байна уу
+      - Мэнд
       - hello
+      - hi
       - hey
-      - сайн уу
-      - мэнд
+
+  - intent: help
+    examples: |
+      - тусламж
+      - help
+      - юу хийж чадах вэ
+      - how to use
 
   - intent: goodbye
     examples: |
-      - bye
-      - goodbye
       - баяртай
-      - за баярлалаа
+      - дараа уулзъя
+      - bye
+      - see you
+
+  - intent: thankyou
+    examples: |
+      - баярлалаа
+      - маш их баярлалаа
+      - thanks
+      - thank you
+
+  - intent: reset
+    examples: |
+      - reset
+      - шинээр эхэл
+      - эхнээс нь
+      - start over
 
   - intent: set_language
     examples: |
-      - EN
+      - /set_language{"lang":"mn"}
+      - /set_language{"lang":"en"}
+      - монгол
+      - english
       - MN
-      - English
-      - Mongolian
-      - хэлээ монголоор
-      - switch to english
+      - EN
 
-  - intent: start_trip_planning
+  - intent: travel_start
     examples: |
-      - I want to plan a trip to Mongolia
-      - help me plan Mongolia travel
-      - Монголд аялах төлөвлөгөө гаргая
+      - аялал
       - аяллаа төлөвлөе
+      - энэ зун монголд аялах гэж байна
+      - би монголд явах гэж байна
+      - travel
+      - plan my trip
+      - I want to travel to Mongolia
+
+  - intent: ask_places
+    examples: |
+      - хаашаа очих вэ
+      - өмнө нь харж байгаагүй газар санал болго
+      - очих газрууд санал болго
+      - where should I go
+      - recommend places
+      - places to visit
+
+  - intent: ask_accommodation
+    examples: |
+      - хаана байрлах вэ
+      - байрлах газар санал болго
+      - ger camp санал болго
+      - accommodation
+      - where to stay
+      - hotel or ger camp
+
+  - intent: ask_weather
+    examples: |
+      - цаг агаар ямар вэ
+      - 7 сард ямар байдаг вэ
+      - weather
+      - what is the weather like
+
+  - intent: ask_transport
+    examples: |
+      - яаж зорчих вэ
+      - унаа
+      - transport
+      - how to get around
+      - do I need a 4x4
+
+  - intent: ask_safety
+    examples: |
+      - аюулгүй юу
+      - анхаарах зүйлс
+      - safety
+      - is it safe
+
+  - intent: ask_cost
+    examples: |
+      - зардал ямар вэ
+      - төсөв хэд байвал болох вэ
+      - cost
+      - budget estimate
+
+  - intent: detailed_breakdown
+    examples: |
+      - нарийн тооцоо
+      - зардлыг задалж өг
+      - detailed breakdown
+      - split the costs
+      - breakdown please
 
   - intent: provide_country
     examples: |
-      - I'm from [Korea](country)
-      - coming from [USA](country)
-      - би [Герман](country)-аас
-      - [Japan](country)
+      - Би Японоос ирнэ
+      - АНУ
+      - Солонгос
+      - from Japan
+      - coming from USA
+      - I am from Germany
 
-  - intent: provide_travel_style
+  - intent: provide_days
     examples: |
-      - I like [nature](travel_style)
-      - [adventure](travel_style) please
-      - [culture](travel_style)
-      - [quiet](travel_style) газар
-      - [family](travel_style)
-
-  - intent: provide_duration
-    examples: |
-      - [5](duration_days) days
-      - [7](duration_days)
-      - [10](duration_days) өдөр
+      - 7 өдөр
+      - 10 өдөр
+      - 14 хоног
+      - for 7 days
+      - 10 days
 
   - intent: provide_budget
     examples: |
-      - [low](budget)
-      - [mid](budget)
-      - [high](budget)
-      - төсөв [mid](budget)
+      - төсөв 500$
+      - 1500$
+      - 2 сая₮
+      - budget is 800$
+      - around $1200
 
-  - intent: provide_season
+  - intent: provide_interest
     examples: |
-      - [summer](season)
-      - [spring](season)
-      - [autumn](season)
-      - [winter](season)
-      - зуны [summer](season)
+      - байгаль
+      - соёл
+      - адал явдал
+      - тайван
+      - nature
+      - culture
+      - adventure
+      - quiet
+
+  - intent: provide_month
+    examples: |
+      - 6 сар
+      - 7 сар
+      - 8 сар
+      - June
+      - July
+      - August

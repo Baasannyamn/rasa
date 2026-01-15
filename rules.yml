@@ -1,27 +1,76 @@
 version: "3.1"
 
 rules:
-  - rule: Activate trip form
+  - rule: Greet
     steps:
-      - intent: start_trip_planning
-      - action: trip_form
-      - active_loop: trip_form
+      - intent: greet
+      - action: action_greet
 
-  - rule: Submit trip form
-    condition:
-      - active_loop: trip_form
+  - rule: Help
     steps:
-      - action: trip_form
-      - active_loop: null
-      - action: action_recommend_itinerary
-      - action: action_suggest_accommodation
+      - intent: help
+      - action: action_help
 
   - rule: Set language
     steps:
       - intent: set_language
       - action: action_set_language
 
-  - rule: Greet
+  - rule: Start travel -> activate form
     steps:
-      - intent: greet
-      - action: utter_greet
+      - intent: travel_start
+      - action: travel_form
+      - active_loop: travel_form
+
+  - rule: Submit travel form -> build plan
+    condition:
+      - active_loop: travel_form
+    steps:
+      - action: travel_form
+      - active_loop: null
+      - action: action_submit_travel_plan
+
+  - rule: Ask places
+    steps:
+      - intent: ask_places
+      - action: action_answer_places
+
+  - rule: Ask accommodation
+    steps:
+      - intent: ask_accommodation
+      - action: action_answer_accommodation
+
+  - rule: Ask weather
+    steps:
+      - intent: ask_weather
+      - action: action_answer_weather
+
+  - rule: Ask transport
+    steps:
+      - intent: ask_transport
+      - action: action_answer_transport
+
+  - rule: Ask safety
+    steps:
+      - intent: ask_safety
+      - action: action_answer_safety
+
+  - rule: Ask cost
+    steps:
+      - intent: ask_cost
+      - action: action_answer_cost
+
+  - rule: Detailed breakdown
+    steps:
+      - intent: detailed_breakdown
+      - action: action_detailed_breakdown
+
+  - rule: Reset
+    steps:
+      - intent: reset
+      - action: action_reset_routing
+      - action: utter_reset_done
+
+  - rule: Fallback
+    steps:
+      - action: action_fallback
